@@ -1,5 +1,14 @@
-import { Chat } from '@/pages/chat/chat';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RouterProvider } from 'react-router';
 
-export const App = () => {
-  return <Chat />;
-};
+import { router } from './router/router';
+
+const queryClient = new QueryClient();
+
+export function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
+}

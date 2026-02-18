@@ -3,5 +3,6 @@
   "compilerOptions": {
     "types": ["vitest/globals", "vite/client"]
   },
-  "include": ["src/**/*.test.*", "src/**/*.spec.*", "vitest.setup.ts"]
+  "include": ["src/**/*.test.*", "src/**/*.spec.*", "vitest.setup.ts"],
+  "exclude": ["node_modules"]
 }

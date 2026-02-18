@@ -1,5 +1,6 @@
-import { http, HttpResponse, delay } from 'msw';
-import { incidentsStore, notesStore, type Incident, type Note } from './store';
+import { delay,http, HttpResponse } from 'msw';
+
+import { type Incident, incidentsStore, type Note,notesStore } from './store';
 
 type IncidentsListResponse = {
   items: Incident[];
