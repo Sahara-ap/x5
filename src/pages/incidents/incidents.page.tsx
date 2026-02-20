@@ -7,6 +7,7 @@ import type { TIncidentsListResponse } from '@/shared/api/types/types';
 import { useQueryParams } from '@/shared/hooks/use-query-params';
 import { Dropdown } from '@/shared/ui/dropdown/dropdown';
 import { debounce } from '@/shared/utils/debounce';
+import { getInitialDropdownOption } from '@/shared/utils/get-initial-dropdown-options';
 import { parsePositiveInteger } from '@/shared/utils/parse-positive-integer';
 
 import { priorityOptions, sortOptions, statusOptions } from './consts/incidents.consts';
@@ -102,8 +103,10 @@ export const IncidentsPage = () => {
     setQueryInputValue(queryFromUrl);
   }, [params.query]);
 
+  
+
   if (isError) {
-    return <div>Something went wrong</div>;
+    return <div>Failed to load incidents</div>;
   }
 
   return (
@@ -125,7 +128,7 @@ export const IncidentsPage = () => {
           <span className={cls.label}>Status</span>
           <Dropdown
             items={statusOptions}
-            initialOption={statusOptions[0]}
+            initialOption={getInitialDropdownOption(statusOptions, params.status)}
             ariaLabel="status dropdown trigger"
             onChange={(option) => handleStatusChange(option.value)}
           />
@@ -135,7 +138,9 @@ export const IncidentsPage = () => {
           <span className={cls.label}>Priority</span>
           <Dropdown
             items={priorityOptions}
-            initialOption={priorityOptions[0]}
+            // initialOption={priorityOptions[0]}
+            initialOption={getInitialDropdownOption(priorityOptions, params.priority)}
+            ariaLabel="priority dropdown trigger"
             onChange={(option) => handlePriorityChange(option.value)}
           />
         </label>
@@ -144,7 +149,8 @@ export const IncidentsPage = () => {
           <span className={cls.label}>Sort</span>
           <Dropdown
             items={sortOptions}
-            initialOption={sortOptions[0]}
+            initialOption={getInitialDropdownOption(sortOptions, params.sort)}
+            ariaLabel="sort dropdown trigger"
             onChange={(option) => handleSortChange(option.value)}
           />
         </label>

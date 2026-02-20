@@ -10,7 +10,12 @@ interface IPaginationProps {
 export const Pagination = ({ data, onPrevPagination, onNextPagination }: IPaginationProps) => {
   return (
     <div className={cls.root}>
-      <button className={cls.button} disabled={data.page <= 1} onClick={onPrevPagination}>
+      <button
+        className={cls.button}
+        aria-label="Previous page"
+        disabled={data.page <= 1}
+        onClick={onPrevPagination}
+      >
         Prev
       </button>
 
@@ -20,6 +25,7 @@ export const Pagination = ({ data, onPrevPagination, onNextPagination }: IPagina
 
       <button
         className={cls.button}
+        aria-label="Next page"
         disabled={data.page >= data.totalPages}
         onClick={onNextPagination}
       >
