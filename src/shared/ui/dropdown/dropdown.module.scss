@@ -1,18 +1,4 @@
 .root {
-  --bg-trigger: rgba(17, 19, 34, 0.8);
-  --color-trigger: #fff;
-  --border-trigger: #685cf7;
-  --border-hover-trigger: #a1a1a1;
-
-  --bg-dropdown: #1d112e;
-  --color-dropdown: #fff;
-  --border-dropdown: #685cf7;
-
-  --bg-option: transparent;
-
-  --bg-hover-option: #111221;
-  --color-hover-option: #fff;
-
   position: relative;
 }
 
@@ -20,64 +6,47 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
+  gap: 8px;
+
   width: 100%;
-  min-height: 42px;
-  padding: 15px 40px;
+  height: 40px;
+  padding: 0 12px;
 
-  font-size: 22px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
 
-  border: 1px var(--border-trigger) solid;
-  border-radius: 40px;
+  background: #ffffff;
+  color: #111827;
 
-  background-color: var(--bg-trigger);
-  color: var(--color-trigger);
-
-  transition: all 0.3s;
   cursor: pointer;
   outline: none;
 
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  @media (max-width: 767px) {
-    padding: 15px 20px;
-    min-height: 32px;
-  }
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
 
   &:hover {
-    border-color: var(--border-hover-trigger);
+    background: #f9fafb;
+    border-color: #cbd5e1;
   }
 
-  &:focus {
-    border-color: #3069e5;
-    box-shadow: 0 0 4px 0 rgb(14 70 192 / 40%);
+  &:focus-visible {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
   }
 
   &:disabled {
-    border-color: #c9c9c9;
-    background-color: #eaeaea;
-    cursor: auto;
-
-    & span {
-      color: #c9c9c9;
-    }
-
-    & > svg path {
-      fill: #c9c9c9;
-    }
-
-    & svg {
-      flex-shrink: 0;
-
-      & path {
-        transition: all 0.3s;
-      }
-    }
+    cursor: not-allowed;
+    color: #9ca3af;
+    background: #f3f4f6;
+    border-color: #e5e7eb;
   }
 
   &.activeTrigger {
+    background: #ffffff;
+    border-color: #cbd5e1;
+
     & svg:last-of-type {
       transform: rotate(180deg);
       transition: all 0.3s;
@@ -86,157 +55,89 @@
 }
 
 .triggerButtonText {
-  font-size: 22px;
-  text-align: start;
-  transition: all 0.3s;
-
-  @media (max-width: 767px) {
-    font-size: 18px;
-  }
+  font-size: 14px;
+  font-weight: 600;
+  color: inherit;
 }
 
 .triggerIcon {
   display: flex;
+  align-items: center;
 
   & svg {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-
-    @media (max-width: 767px) {
-      width: 16px;
-      height: 16px;
-    }
-
-    & path {
-      transition: all 0.3s;
-    }
+    width: 16px;
+    height: 16px;
   }
 }
 
 .dropdown {
-  max-height: 1px; //убираю высоту в initial состоянии
-  height: 1px; //убираю высоту в initial состоянии
-  overflow: hidden;
-
   position: absolute;
-  z-index: 5;
-  top: 60px;
-  right: 0;
+  z-index: 10;
   left: 0;
-  box-shadow: 0 8px 16px 0 rgb(0 0 0 / 10%);
+  right: 0;
+  top: calc(100% + 6px);
+
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+
+  max-height: 240px;
   overflow: auto;
-  transition: all 0.3s;
-  transform: translateY(-10px);
 
-  background-color: var(--bg-dropdown);
-
-  border: 1px var(--border-dropdown) solid;
-  border-radius: 40px;
   opacity: 0;
-
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  transform: translateY(-6px);
   pointer-events: none;
 
-  &.dropdownOpen {
-    height: auto;
-    max-height: none;
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+}
 
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: all;
-  }
-
-  &::-webkit-scrollbar {
-    width: 4px; /* ширина вертикального скролла */
-  }
-  &::-webkit-scrollbar {
-    width: 4px; /* ширина вертикального скролла */
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #888; /* цвет ползунка */
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent; /* фон трека */
-  }
+.dropdownOpen {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
 }
 
 .menuList {
-  max-height: 1px; //убираю высоту в initial состоянии
-  height: 1px; //убираю высоту в initial состоянии
-  overflow: hidden;
-
-  display: grid;
-  justify-items: start;
-  padding: 0;
-  transition: all 0.3s;
-  pointer-events: none;
-  list-style-type: none;
-
-  &.listOpen {
-    padding: 10px 0;
-    pointer-events: all;
-    height: auto;
-    max-height: none;
-  }
+  margin: 0;
+  padding: 6px;
+  list-style: none;
 }
 
 .optionItem {
   width: 100%;
-  overflow: hidden;
 }
 
 .optionButton {
-  display: flex;
-  align-items: center;
-  gap: 2px;
   width: 100%;
-  padding: 12px 39px;
+  padding: 10px 10px;
+
   border: none;
-  background-color: var(--bg-option);
-  overflow: hidden;
-  transition: all 0.3s;
+  border-radius: 10px;
+
+  background: transparent;
+  color: #111827;
+
+  text-align: left;
   cursor: pointer;
-  outline: none;
-  color: var(--color-dropdown);
 
-  font-weight: 500;
-
-  @media (max-width: 767px) {
-    padding: 8px 39px;
-  }
-  @media (max-width: 389px) {
-    padding: 6px 20px 6px 39px;
-  }
+  transition: background-color 0.12s ease;
 
   &:hover,
-  &:focus {
-    background-color: var(--bg-hover-option);
-    color: var(--color-hover-option);
-    font-weight: 700;
-  }
-
-  & > svg {
-    flex-shrink: 0;
+  &:focus-visible {
+    background: #f3f4f6;
+    outline: none;
   }
 }
 
 .optionButtonText {
-  font-size: 20px;
-  text-align: left;
-  transition: all 0.3s;
-
-  @media (max-width: 767px) {
-    font-size: 18px;
-  }
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .optionButtonTextActive {
-  font-weight: 600;
+  color: #2563eb;
 }
