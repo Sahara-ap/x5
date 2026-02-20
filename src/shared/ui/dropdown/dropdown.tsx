@@ -24,6 +24,7 @@ export interface IDropdownProps {
   clsTrigger?: string;
   clsDropdown?: string;
   clsOptionItem?: string;
+  ariaLabel?: string;
   onChange: (option: IDropDownOption) => void;
 }
 
@@ -37,6 +38,7 @@ export const Dropdown = ({
   clsTrigger,
   clsDropdown,
   clsOptionItem,
+  ariaLabel,
   onChange,
 }: IDropdownProps) => {
   const [currentText, setCurrentText] = useState<string>(initialOption.text);
@@ -73,6 +75,7 @@ export const Dropdown = ({
         onClick={handleTriggerButtonClick}
         disabled={isDisabled}
         type="button"
+        aria-label={ariaLabel}
       >
         {leftIcon && leftIcon}
         <span className={cls.triggerButtonText}>{currentText}</span>

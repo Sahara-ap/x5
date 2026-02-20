@@ -124,7 +124,6 @@ export const IncidentsPage = () => {
           <Dropdown
             items={statusOptions}
             initialOption={statusOptions[0]}
-            ariaLabel="status dropdown trigger"
             onChange={(option) => handleStatusChange(option.value)}
           />
         </label>

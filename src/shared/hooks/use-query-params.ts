@@ -21,14 +21,11 @@ export const useQueryParams = () => {
     (params: TSearchParams, searchParams?: URLSearchParams) => {
       const newParams = new URLSearchParams(searchParams);
 
-      console.log('params', Object.entries(params));
-
       Object.entries(params).forEach(([key, value]) => {
         if (isValidParamValue(value)) {
           newParams.set(key, String(value));
         } else {
           newParams.delete(key);
-          console.log('del');
         }
       });
 
