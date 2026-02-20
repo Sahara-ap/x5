@@ -1,0 +1,48 @@
+.root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f6f7f9;
+}
+
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.headerContainer {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #111827;
+}
+
+.subtle {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.container {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}

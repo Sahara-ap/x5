@@ -10,6 +10,7 @@ import { debounce } from '@/shared/utils/debounce';
 import { parsePositiveInteger } from '@/shared/utils/parse-positive-integer';
 
 import { priorityOptions, sortOptions, statusOptions } from './consts/incidents.consts';
+import cls from './incidents.page.module.scss';
 import { isPriorityType, isSortType, isStatusType } from './model/guards';
 import { Pagination } from './ui/pagination';
 
@@ -106,21 +107,22 @@ export const IncidentsPage = () => {
   }
 
   return (
-    <div>
-      <h1>Incidents</h1>
+    <div className={cls.page}>
+      <h1 className={cls.title}>Incidents</h1>
 
-      <div style={{ display: 'grid', gap: 8, maxWidth: 520 }}>
-        <label>
-          Search
+      <div className={cls.toolbar}>
+        <label className={cls.field}>
+          <span className={cls.label}>Search</span>
           <input
+            className={cls.input}
             value={queryInputValue}
             onChange={(event) => handleQueryChange(event.target.value)}
             placeholder="Search by title/description/id"
           />
         </label>
 
-        <label>
-          Status
+        <label className={cls.field}>
+          <span className={cls.label}>Status</span>
           <Dropdown
             items={statusOptions}
             initialOption={statusOptions[0]}
@@ -129,8 +131,8 @@ export const IncidentsPage = () => {
           />
         </label>
 
-        <label>
-          Priority
+        <label className={cls.field}>
+          <span className={cls.label}>Priority</span>
           <Dropdown
             items={priorityOptions}
             initialOption={priorityOptions[0]}
@@ -138,8 +140,8 @@ export const IncidentsPage = () => {
           />
         </label>
 
-        <label>
-          Sort
+        <label className={cls.field}>
+          <span className={cls.label}>Sort</span>
           <Dropdown
             items={sortOptions}
             initialOption={sortOptions[0]}
@@ -148,26 +150,32 @@ export const IncidentsPage = () => {
         </label>
       </div>
 
-      {isLoading || !data ? (
-        <div>Loading…</div>
-      ) : data.items.length === 0 ? (
-        <div>No incidents found</div>
-      ) : (
-        <ul>
-          {data.items.map((incident) => (
-            <li key={incident.id}>
-              <Link to={`/incidents/${incident.id}`}>{incident.title}</Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className={cls.content}>
+        {isLoading || !data ? (
+          <div className={cls.state}>Loading…</div>
+        ) : data.items.length === 0 ? (
+          <div className={cls.state}>No incidents found</div>
+        ) : (
+          <ul className={cls.list}>
+            {data.items.map((incident) => (
+              <li className={cls.listItem} key={incident.id}>
+                <Link className={cls.link} to={`/incidents/${incident.id}`}>
+                  {incident.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {!isLoading && data && data.totalPages > 1 && (
-        <Pagination
-          data={data}
-          onPrevPagination={handlePrevPagination}
-          onNextPagination={handleNextPagination}
-        />
+        <div className={cls.footer}>
+          <Pagination
+            data={data}
+            onPrevPagination={handlePrevPagination}
+            onNextPagination={handleNextPagination}
+          />
+        </div>
       )}
     </div>
   );

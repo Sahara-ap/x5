@@ -1,26 +1,28 @@
 import type { TIncidentsListResponse } from '@/shared/api/types/types';
 
+import cls from './pagination.module.scss';
+
 interface IPaginationProps {
   data: TIncidentsListResponse;
   onNextPagination: () => void;
   onPrevPagination: () => void;
 }
-export const Pagination = ({
-  data,
-  onPrevPagination,
-  onNextPagination,
-}: IPaginationProps) => {
+export const Pagination = ({ data, onPrevPagination, onNextPagination }: IPaginationProps) => {
   return (
-    <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
-      <button disabled={data.page <= 1} onClick={onPrevPagination}>
+    <div className={cls.root}>
+      <button className={cls.button} disabled={data.page <= 1} onClick={onPrevPagination}>
         Prev
       </button>
 
-      <span>
+      <span className={cls.text}>
         Page {data.page} of {data.totalPages}
       </span>
 
-      <button disabled={data.page >= data.totalPages} onClick={onNextPagination}>
+      <button
+        className={cls.button}
+        disabled={data.page >= data.totalPages}
+        onClick={onNextPagination}
+      >
         Next
       </button>
     </div>

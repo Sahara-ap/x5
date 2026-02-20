@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { createTestRoutes } from '@/shared/test-utils/create-route';
@@ -16,6 +16,6 @@ describe('routing', () => {
     await user.click(link);
 
   
-    expect(await screen.findByText(/Status:/i, {})).toBeInTheDocument();
+    expect(await screen.findByText(/Status:/i)).toBeInTheDocument();
   });
 });
