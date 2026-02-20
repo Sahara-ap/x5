@@ -6,6 +6,10 @@ import type {
 
 export type TIncidentsListResponse = {
   items: { id: string; title: string }[];
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
 };
 
 export type TIncidentDetailsResponse = {

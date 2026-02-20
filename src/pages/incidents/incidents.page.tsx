@@ -1,17 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
 import { api } from '@/shared/api';
 import type { TIncidentsListResponse } from '@/shared/api/types/types';
 import { useQueryParams } from '@/shared/hooks/use-query-params';
-import { Dropdown  } from '@/shared/ui/dropdown/dropdown';
+import { Dropdown } from '@/shared/ui/dropdown/dropdown';
+import { debounce } from '@/shared/utils/debounce';
 import { parsePositiveInteger } from '@/shared/utils/parse-positive-integer';
 
 import { priorityOptions, sortOptions, statusOptions } from './consts/incidents.consts';
 import { isPriorityType, isSortType, isStatusType } from './model/guards';
+import { Pagination } from './ui/pagination';
 
 export const IncidentsPage = () => {
   const { params, updateParams } = useQueryParams();
+  const [queryInputValue, setQueryInputValue] = useState(params.query || '');
 
   const query = params.query;
   const status = params.status;
@@ -34,11 +38,20 @@ export const IncidentsPage = () => {
     queryFn: ({ signal }) => api.getIncidents(incidentsQueryParameters, { signal }),
   });
 
+  const debouncedUpdateParams = useMemo(
+    () =>
+      debounce((value: string) => {
+        updateParams({
+          query: value,
+          page: '1', // при изменении фильтров/поиска сбрасыва страницу
+        });
+      }, 400),
+    [updateParams]
+  );
+
   const handleQueryChange = (value: string) => {
-    updateParams({
-      query: value,
-      page: '1', // при изменении фильтров/поиска сбрасыва страницу
-    });
+    setQueryInputValue(value);
+    debouncedUpdateParams(value);
   };
 
   const handleStatusChange = (value: string) => {
@@ -70,6 +83,26 @@ export const IncidentsPage = () => {
     }
   };
 
+  const handlePrevPagination = () => {
+    if (!data) return;
+    updateParams({
+      page: String(data.page - 1),
+    });
+  };
+  const handleNextPagination = () => {
+    if (!data) return;
+    updateParams({
+      page: String(data.page + 1),
+    });
+  };
+
+  //синхронизация input с Back/Next history
+  useEffect(() => {
+    const queryFromUrl = params.query || '';
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setQueryInputValue(queryFromUrl);
+  }, [params.query]);
+
   if (isError) {
     return <div>Something went wrong</div>;
   }
@@ -82,7 +115,7 @@ export const IncidentsPage = () => {
         <label>
           Search
           <input
-            value={query}
+            value={queryInputValue}
             onChange={(event) => handleQueryChange(event.target.value)}
             placeholder="Search by title/description/id"
           />
@@ -128,6 +161,14 @@ export const IncidentsPage = () => {
             </li>
           ))}
         </ul>
+      )}
+
+      {!isLoading && data && data.totalPages > 1 && (
+        <Pagination
+          data={data}
+          onPrevPagination={handlePrevPagination}
+          onNextPagination={handleNextPagination}
+        />
       )}
     </div>
   );

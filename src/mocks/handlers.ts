@@ -56,13 +56,15 @@ const paginate = <T>(
   items: T[],
   page: number,
   limit: number
-): { pageItems: T[]; totalPages: number } => {
-  const totalPages = Math.max(1, Math.ceil(items.length / limit));
-  const safePage = Math.min(Math.max(page, 1), totalPages);
-  const startIndex = (safePage - 1) * limit;
-  const endIndex = startIndex + limit;
+): { pageItems: T[]; totalPages: number; safePage: number; safeLimit: number } => {
+  const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 10;
 
-  return { pageItems: items.slice(startIndex, endIndex), totalPages };
+  const totalPages = Math.max(1, Math.ceil(items.length / safeLimit));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  const startIndex = (safePage - 1) * safeLimit;
+  const endIndex = startIndex + safeLimit;
+
+  return { pageItems: items.slice(startIndex, endIndex), totalPages, safePage, safeLimit };
 };
 
 // --------------------
@@ -98,12 +100,12 @@ export const handlers = [
 
     filtered = sortIncidents(filtered, sort);
 
-    const { pageItems, totalPages } = paginate(filtered, page, limit);
+    const { pageItems, totalPages, safePage, safeLimit } = paginate(filtered, page, limit);
 
     const response: IncidentsListResponse = {
       items: pageItems,
-      page,
-      limit,
+      page: safePage,
+      limit: safeLimit,
       totalItems: filtered.length,
       totalPages,
     };
